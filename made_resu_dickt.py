@@ -9,51 +9,6 @@ from About_client_info import made_smole_name
 
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
-
-def sklonenie_name(
-    name: str, declination: str
-):  # определение пола по отчеству, нужно указывать падеж
-
-    #   переменная = sklonenie_name(ФИО должника, "Склонение")
-    #     Родительный
-    #     GENITIVE = 0
-    #     # Дательный
-    #     DATIVE = 1
-    #     # Винительный
-    #     ACCUSATIVE = 2
-    #     # Творительный
-    #     INSTRUMENTAL = 3
-    #     # Предложный
-    #     PREPOSITIONAL = 4
-
-    p = Petrovich()
-
-    if name.split(" ")[-1][-2:] == "ич" or name.split(" ")[-1][-2:] == "лы":
-        gender = "male"
-    elif (
-        name.split(" ")[-1][-2:] == "на"
-        or name.split(" ")[-1][-2:] == "зы"
-        or name.split(" ")[0][-2:] == "ва"
-    ):
-        gender = "female"
-    di_decl = {
-        "GENITIVE": 0,
-        "DATIVE": 1,
-        "ACCUSATIVE": 2,
-        "INSTRUMENTAL": 3,
-        "PREPOSITIONAL": 4,
-    }
-    decl = di_decl[declination]
-    lastname_s = p.lastname(name.split(" ")[0], decl, gender)
-    name_s = p.firstname(name.split(" ")[1], decl, gender)
-    middlename_s = p.middlename(name.split(" ")[2], decl, gender)
-
-    recipient = (
-        f"{lastname_s} {name_s} {middlename_s}"  # имя в дательном падеже для шапки заяв
-    )
-    return recipient
-
-
 def make_result_dikt(url:str,lot_num = "1"):
     dikt_table = efrsb_parser.data_lot_tabel(url)
     dict_two = efrsb_parser.make_content_dict(url)
@@ -61,14 +16,14 @@ def make_result_dikt(url:str,lot_num = "1"):
     clieInf = About_client_info.ClientInfo()
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
-        obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
-        ob_snils_ogrn = f"СНИЛС {dict_two['СНИЛС']}"
-        adres = dict_two["Место жительства"]
+        # obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
+        # ob_snils_ogrn = f"СНИЛС {dict_two['СНИЛС']}"
+        # adres = dict_two["Место жительства"]
     elif len(dict_two["ИНН"]) == 10:
         name_of_obligator = dict_two["Наименование должника"]
-        obligator_rad = dict_two["Наименование должника"]
-        ob_snils_ogrn = f"ОГРН {dict_two['ОГРН']}"
-        adres = dict_two["Адрес"]
+        # obligator_rad = dict_two["Наименование должника"]
+        # ob_snils_ogrn = f"ОГРН {dict_two['ОГРН']}"
+        # adres = dict_two["Адрес"]
     else:
         name_of_obligator = None  # Вы можете установить значение по умолчанию или обработать другим способом
 
@@ -99,11 +54,11 @@ def make_result_dikt(url:str,lot_num = "1"):
     lot_info = {
         "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
-        "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
         "OBLIGOR_NAME": name_of_obligator,  # фио должника
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
         "arb_man_email": "!!!!!!!",#dict_two["E-mail"],
 
+        # "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
        # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
         #"EFRSB_PUB_DAT": dict_two["Дата публикации"],  # Дата публикации в ЕФРСБ
         # "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
@@ -127,7 +82,7 @@ def make_result_dikt(url:str,lot_num = "1"):
 
     }
     
-    lot_info["smol_arb_name"] = made_smole_name(lot_info["OBLIGOR_NAME"])
+    lot_info["smol_arb_name"] = made_smole_name(lot_info["arb_man_name"])
     
 
     return clieInf | lot_info

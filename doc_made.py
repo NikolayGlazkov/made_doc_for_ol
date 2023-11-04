@@ -13,7 +13,7 @@ def made_docx_file(data_from_pars:dict,filename:str): # словарь мз па
 
 
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=3527D6CA1F47485E8762A45B3CB12C09"
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=17312B0CF7084B68AF8471BBEE3F9C5F"
 data_from_pars = made_resu_dickt.make_result_dikt(url=url) 
 
 # lot_namber = "6" #:укажите номер лота
