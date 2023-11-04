@@ -9,11 +9,14 @@ from About_client_info import made_smole_name
 
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
-def make_result_dikt(url:str,lot_num = "1"):
+
+def make_result_dikt(url:str,lot_numbers:list):
     dikt_table = efrsb_parser.data_lot_tabel(url)
     dict_two = efrsb_parser.make_content_dict(url)
 
     clieInf = About_client_info.ClientInfo()
+
+
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
         # obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
@@ -35,22 +38,12 @@ def make_result_dikt(url:str,lot_num = "1"):
         type_of_bidding = "закрытого аукциона"
 
 
-    # if dict_two["Форма подачи предложения о цене"] == "Открытая":
-    #     opn_clos_skl = "открытой"
-    #     opn_clos_an = "открытых"
-    # elif dict_two["Форма подачи предложения о цене"] == "Закрытая":
-    #     opn_clos_skl = "закрытой"
-    #     opn_clos_an = "закрытых"
+    
     name_arbitr = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[:3])
     INN_CNI_arbit_manager = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[3:])
 
-    # acsion_date = dict_two["Дата и время торгов"].split()[0]
-
-
-    lot_price = int(dikt_table[lot_num]["Начальная цена, руб"].split(",")[0].replace(" ", ""))
-
-    percent_price = int(dikt_table[lot_num]["Задаток"].split(",")[0])
-    # zadatok = lot_price / 100 * percent_price
+    lot_list = [f"лот № {key}: {value['Описание']}" for key, value in dikt_table.items()]
+    
     lot_info = {
         "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
@@ -72,8 +65,9 @@ def make_result_dikt(url:str,lot_num = "1"):
         "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
         "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
-        "lot_namber": lot_num,
-        "LOT_NAME": dikt_table[lot_num]["Описание"],  # Наименование и номер лота
+        "lot_list_name":lot_list,
+        # "lot_namber": lot_num,
+        # "LOT_NAME": dikt_table[lot_num]["Описание"],  # Наименование и номер лота
         # "DATA_AUCKCIONA": acsion_date,  # дата провдения
         # "LOT_PRICE": lot_price,  # цена лота
         # "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
@@ -86,3 +80,5 @@ def make_result_dikt(url:str,lot_num = "1"):
     
 
     return clieInf | lot_info
+
+
