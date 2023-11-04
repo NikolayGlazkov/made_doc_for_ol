@@ -98,21 +98,22 @@ def make_result_dikt(url:str,lot_num = "1"):
     # zadatok = lot_price / 100 * percent_price
     lot_info = {
         "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
-       # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
-        #"EFRSB_PUB_DAT": dict_two["Дата публикации"],  # Дата публикации в ЕФРСБ
-        "OBLIGOR_NAME": name_of_obligator,  # фио должника
-        # "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
-        #"PLASE_OBLIGOR": adres,  # Место нахождения должника
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
         "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
-        "opn_clos_an": opn_clos_an,
-        "opn_clos_skl": opn_clos_skl,
+        "OBLIGOR_NAME": name_of_obligator,  # фио должника
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-        "arb_man_email": dict_two["E-mail"],
+        "arb_man_email": "!!!!!!!",#dict_two["E-mail"],
+
+       # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
+        #"EFRSB_PUB_DAT": dict_two["Дата публикации"],  # Дата публикации в ЕФРСБ
+        # "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
+        #"PLASE_OBLIGOR": adres,  # Место нахождения должника
+        # "opn_clos_an": opn_clos_an,
+        #  "opn_clos_skl": opn_clos_skl,
         # "AR_MAN_IN_DAT": sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
         "INN_CNI_arbit_manager": INN_CNI_arbit_manager,  # инн снилс арбитражного упровляющего
         "Sro_Arbitration": dict_two["СРО АУ"],  # наименование СРО АУ
-        "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
+        # "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
         "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
         "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
@@ -125,8 +126,8 @@ def make_result_dikt(url:str,lot_num = "1"):
         "smol_arb_name":"",
 
     }
-    temp_asd = made_smole_name(lot_info["OBLIGOR_NAME"])
-    print(f"{temp_asd} хуй")
     
-    # print(lot_info["smol_arb_name"])
+    lot_info["smol_arb_name"] = made_smole_name(lot_info["OBLIGOR_NAME"])
+    
+
     return clieInf | lot_info

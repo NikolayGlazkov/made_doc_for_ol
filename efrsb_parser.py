@@ -63,7 +63,7 @@ def make_content_dict(url):
         "Дата и время торгов",
         "Форма подачи предложения о цене",
         "Место проведения",
-        "E-mail"
+        # "E-mail"
     ]
     for element in elements_with_primary_class:
         for text in respons_text:
