@@ -10,7 +10,7 @@ from About_client_info import made_smole_name
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
 
-def make_result_dikt(url:str,lot_numbers:list):
+def make_result_dikt(url:str):
     dikt_table = efrsb_parser.data_lot_tabel(url)
     dict_two = efrsb_parser.make_content_dict(url)
 
@@ -49,7 +49,7 @@ def make_result_dikt(url:str,lot_numbers:list):
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
         "OBLIGOR_NAME": name_of_obligator,  # фио должника
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-        "arb_man_email": "!!!!!!!",#dict_two["E-mail"],
+        # "arb_man_email": "Это надо доделать не всегда есть",#dict_two["E-mail"],
 
         # "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
        # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
@@ -66,8 +66,7 @@ def make_result_dikt(url:str,lot_numbers:list):
         "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
         "lot_list_name":lot_list,
-        # "lot_namber": lot_num,
-        # "LOT_NAME": dikt_table[lot_num]["Описание"],  # Наименование и номер лота
+          # Наименование и номер лота
         # "DATA_AUCKCIONA": acsion_date,  # дата провдения
         # "LOT_PRICE": lot_price,  # цена лота
         # "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
