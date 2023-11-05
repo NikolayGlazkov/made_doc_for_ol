@@ -1,4 +1,3 @@
-import efrsb_parser
 import About_client_info
 import datetime
 from petrovich.main import Petrovich
@@ -7,21 +6,37 @@ from num2words import num2words
 from About_client_info import made_smole_name
 
 
+
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
 # вы борка по номеру лота
-def select_by_lot_numbers(my_dict, lot_numbers):
-    """Функция извлекает описания по номерам лотов из словаря, возвращает новый словарь."""
+def select_and_generate(my_dict:dict, lot_numbers:list):
+    """
+    Функция объединяет выборку по номерам лотов и генерацию списка для записи в файл.
+    Возвращает список строк для записи в файл.
+    """
     selected_descriptions = {}
+    result = []
+
+    # Извлекаем описания по номерам лотов из словаря
     for lot_number in lot_numbers:
         if lot_number in my_dict:
             selected_descriptions[lot_number] = my_dict[lot_number]["Описание"]
-    return selected_descriptions
 
-def make_result_dikt(dikt_table:dict,dict_two:dict):
+    # Формируем список для записи в файл
+    for lot_number, details in selected_descriptions.items():
+        description = details
+        result.append(f"лот№ {lot_number}: {description}")
+
+    return result
+
+
+
+def make_result_dikt(dict_two:dict,lot_numbers:list):
 
     clieInf = About_client_info.ClientInfo()
 
+   
 
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
@@ -48,7 +63,6 @@ def make_result_dikt(dikt_table:dict,dict_two:dict):
     name_arbitr = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[:3])
     INN_CNI_arbit_manager = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[3:])
 
-    lot_list = [f"лот № {key}: {value['Описание']}" for key, value in dikt_table.items()]
     
     lot_info = {
         "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
@@ -71,7 +85,8 @@ def make_result_dikt(dikt_table:dict,dict_two:dict):
         "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
         "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
-        "lot_list_name":lot_list,
+        "lot_colvo":"", # количество лотов
+        
           # Наименование и номер лота
         # "DATA_AUCKCIONA": acsion_date,  # дата провдения
         # "LOT_PRICE": lot_price,  # цена лота
@@ -79,12 +94,15 @@ def make_result_dikt(dikt_table:dict,dict_two:dict):
         # "DEPOSIT": zadatok  # Размер задатка
         "smol_arb_name":"",
 
+
     }
+    if len(lot_numbers) > 1:
+        lot_info["lot_colvo"] = "следующих лотов"
+    else:
+        lot_info["lot_colvo"] = "следующего лота"
     
     lot_info["smol_arb_name"] = made_smole_name(lot_info["arb_man_name"])
     
 
     return clieInf | lot_info
-
-
 

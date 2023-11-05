@@ -1,6 +1,6 @@
 from num2words import num2words
 
-def made_price_ofer_rus(my_int=5000):
+def made_price_ofer_rus(my_int):
     price_as_text = num2words(my_int, lang='ru')
     return price_as_text
 
@@ -27,7 +27,7 @@ def ClientInfo():
         "CLIENT_PHONE": "",  # номер телефона Учасника
         
         "My_many": 5000, # цена по умолчанию 5 тыс
-        "My_prosent":"",
+        "My_prosent":5, # процент по огентскому вознагрождению
         "BANK_RS_NUMBER": "",  # Р/С НОМЕР участника
         "BANK_NAME": "",  # нименование банка
         "BANK_BIK": "",  # БИК банка участника
@@ -38,20 +38,24 @@ def ClientInfo():
 
         "my_mani_in": "",  # эта переменная еще не создана
         "Smol_name": "", #  эта переменная еще не создана
-        "porydok_ras":""
+        "Porydak_Ras":""
     }  
 
    
     klient_info["Smol_name"] = made_smole_name(klient_info["CL_NAME"])
     klient_info["my_mani_in"] = made_price_ofer_rus(klient_info["My_many"])
     
-    
-    if isinstance(klient_info["My_prosent"], int):
-        klient_info["porydok_ras"] = f"это число"
-    else:
-        klient_info["porydok_ras"] = f"это строка"
+    if klient_info["My_prosent"] > 1:
+        word = "прцентов"
+    if klient_info["My_prosent"] == 1:
+        word = "процент"
+    my_str = f"Дополнительно, в случае победы, Агенту выплачивается вознаграждение в размере {klient_info['My_prosent']}% ({made_price_ofer_rus(klient_info['My_prosent'])} {word}) от суммы покупки выше упомянуты лотов на торгах, но не менее 2000 (двух тысяч) рублей за каждый выигранный лот. Вознаграждение выплачивается не позднее 2-х рабочих дней с момента опубликования протокола о результатах торгов."
+    if klient_info["My_prosent"] > 0:
+        klient_info["Porydak_Ras"] = my_str
+    if klient_info["My_prosent"] == 0:
+        klient_info["Porydak_Ras"] = ""
     
     return klient_info
 
 
-ClientInfo()
+# print(ClientInfo()['porydok_ras'])
