@@ -9,10 +9,16 @@ from About_client_info import made_smole_name
 
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
+# вы борка по номеру лота
+def select_by_lot_numbers(my_dict, lot_numbers):
+    """Функция извлекает описания по номерам лотов из словаря, возвращает новый словарь."""
+    selected_descriptions = {}
+    for lot_number in lot_numbers:
+        if lot_number in my_dict:
+            selected_descriptions[lot_number] = my_dict[lot_number]["Описание"]
+    return selected_descriptions
 
-def make_result_dikt(url:str):
-    dikt_table = efrsb_parser.data_lot_tabel(url)
-    dict_two = efrsb_parser.make_content_dict(url)
+def make_result_dikt(dikt_table:dict,dict_two:dict):
 
     clieInf = About_client_info.ClientInfo()
 
@@ -79,5 +85,6 @@ def make_result_dikt(url:str):
     
 
     return clieInf | lot_info
+
 
 

@@ -1,8 +1,10 @@
 from docx import Document
-from docx.shared import Pt
+
 from docxtpl import DocxTemplate
-from made_resu_dickt import make_result_dikt
-from efrsb_parser import data_lot_tabel
+from made_resu_dickt import make_result_dikt,select_by_lot_numbers
+import efrsb_parser
+
+
 
 def made_docx_file(data_from_pars:dict,filename:str): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
         doc = DocxTemplate(filename)
@@ -35,12 +37,21 @@ def made_docx_par(data_from_pars: dict, filename: str):
         new_file_name = filename.replace(filename, f"Результат_{filename}.docx")
         doc.save(new_file_name) 
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=ECD1121C6AD44109BB4E10BC6AA7EBBB"
-data_from_pars = make_result_dikt(url=url)
 
-# # lot_namber = "6" #:укажите номер лота
-# selected_lots = ['4', '7', '8']
-made_docx_file(data_from_pars,"Agent_dogovor.docx")
-made_docx_file(data_from_pars,"Zayavka_auction.docx")
-# made_docx_par(data_lot_tabel(url=url),"Агентский договор№1.docx")
-# made_docx_par(data_lot_tabel(url=url),"Заявка для участия№1.docx")
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=ECD1121C6AD44109BB4E10BC6AA7EBBB"
+
+dikt_table = efrsb_parser.data_lot_tabel(url)
+dict_two = efrsb_parser.make_content_dict(url)
+
+data_from_pars = make_result_dikt(dikt_table,dict_two)
+
+
+# made_docx_file(data_from_pars,"Agent_dogovor.docx")
+# made_docx_file(data_from_pars,"Zayavka_auction.docx")
+
+
+selected_lots = ['1']
+
+print(select_by_lot_numbers(dikt_table,lot_numbers = selected_lots))
+
+# my_dict = {'3': 'АвтоФургон Марка, модель 2747-0000010 Год выпуска 2012 государственный регистрационный номер Е023ТЕ93 VIN Х3Х274700С0463208', '7': 'АвтоФургон Марка, модель 172412, Год выпуска 2012 государственный регистрационный номер С250ЕЕ123 VIN Z74172412C0021199', '6': 'АвтоФургон Марка, модель 172412 ГАЗ 172412, Год выпуска 2012 государственный регистрационный номер А064ТН123 VIN Z74172412C0016657', '8': 'АвтоФургон Марка, модель 172412, Год выпуска 2012 государственный регистрационный номер К323ТУ123 VIN Z74172412C0022009'}
