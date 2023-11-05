@@ -35,7 +35,7 @@ def made_docx_par(data_from_pars: dict, filename: str):
         new_file_name = filename.replace(filename, f"Результат_{filename}.docx")
         doc.save(new_file_name) 
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=64FA3DE4286543FB81692361FEEC3A12"
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=ECD1121C6AD44109BB4E10BC6AA7EBBB"
 data_from_pars = make_result_dikt(url=url)
 
 # # lot_namber = "6" #:укажите номер лота
