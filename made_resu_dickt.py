@@ -1,6 +1,6 @@
 import About_client_info
 import datetime
-from petrovich.main import Petrovich
+# from petrovich.main import Petrovich
 import re
 from num2words import num2words
 from About_client_info import made_smole_name
