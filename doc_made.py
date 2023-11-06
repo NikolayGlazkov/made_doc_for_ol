@@ -1,22 +1,40 @@
 from docx import Document
-from docx.shared import Pt
+
 from docxtpl import DocxTemplate
-from made_resu_dickt import make_result_dikt
+from made_resu_dickt import make_result_dikt, select_and_generate
+import efrsb_parser
 
-def made_docx_file(data_from_pars:dict,filename:str): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
-        doc = DocxTemplate(filename)
-        doc.render(data_from_pars)
-        if filename == "Agent_dogovor.docx":
-            doc.save(f"Агентский договор№1.docx")
-        if filename == "Zayavka_auction.docx":
-              doc.save(f"Заявка для участия№1.docx")
+def docx_made_lot_list(my_list):
+    doc = Document()
+
+    for item in my_list:
+        doc.add_paragraph(item)
+
+    doc.save('Список лотов.docx')
+
+def made_docx_file(
+    data_from_pars: dict, filename: str
+):  # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
+    doc = DocxTemplate(filename)
+    doc.render(data_from_pars)
+    if filename == "Agent_dogovor.docx":
+        doc.save(f"Агентский договор№1.docx")
+    if filename == "Zayavka_auction.docx":
+        doc.save(f"Заявка для участия№1.docx")
 
 
+selected_lots = ["1"]  # введите номера лотов
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=E44C901C3E1D4999B130DE518C1B4A21"
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=17312B0CF7084B68AF8471BBEE3F9C5F"
-data_from_pars = make_result_dikt(url=url,lot_numbers = ['1'])
+dikt_table = efrsb_parser.data_lot_tabel(url)
+dict_two = efrsb_parser.make_content_dict(url)
 
-# # lot_namber = "6" #:укажите номер лота
-# selected_lots = ['4', '7', '8']
-made_docx_file(data_from_pars,"Agent_dogovor.docx")
-made_docx_file(data_from_pars,"Zayavka_auction.docx")
+data_from_pars = make_result_dikt(dict_two,lot_numbers=selected_lots)
+
+
+docx_made_lot_list(select_and_generate(dikt_table,lot_numbers = selected_lots)) # список лотов
+made_docx_file(data_from_pars, "Agent_dogovor.docx")
+made_docx_file(data_from_pars, "Zayavka_auction.docx")
+
+
+# print(dikt_table)

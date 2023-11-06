@@ -1,4 +1,3 @@
-import efrsb_parser
 import About_client_info
 import datetime
 from petrovich.main import Petrovich
@@ -7,15 +6,37 @@ from num2words import num2words
 from About_client_info import made_smole_name
 
 
+
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
+# вы борка по номеру лота
+def select_and_generate(my_dict:dict, lot_numbers:list):
+    """
+    Функция объединяет выборку по номерам лотов и генерацию списка для записи в файл.
+    Возвращает список строк для записи в файл.
+    """
+    selected_descriptions = {}
+    result = []
 
-def make_result_dikt(url:str,lot_numbers:list):
-    dikt_table = efrsb_parser.data_lot_tabel(url)
-    dict_two = efrsb_parser.make_content_dict(url)
+    # Извлекаем описания по номерам лотов из словаря
+    for lot_number in lot_numbers:
+        if lot_number in my_dict:
+            selected_descriptions[lot_number] = my_dict[lot_number]["Описание"]
+
+    # Формируем список для записи в файл
+    for lot_number, details in selected_descriptions.items():
+        description = details
+        result.append(f"лот№ {lot_number}: {description}")
+
+    return result
+
+
+
+def make_result_dikt(dict_two:dict,lot_numbers:list):
 
     clieInf = About_client_info.ClientInfo()
 
+   
 
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
@@ -42,14 +63,13 @@ def make_result_dikt(url:str,lot_numbers:list):
     name_arbitr = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[:3])
     INN_CNI_arbit_manager = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[3:])
 
-    lot_list = [f"лот № {key}: {value['Описание']}" for key, value in dikt_table.items()]
     
     lot_info = {
         "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
         "OBLIGOR_NAME": name_of_obligator,  # фио должника
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-        "arb_man_email": "!!!!!!!",#dict_two["E-mail"],
+        # "arb_man_email": "Это надо доделать не всегда есть",#dict_two["E-mail"],
 
         # "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
        # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
@@ -65,20 +85,24 @@ def make_result_dikt(url:str,lot_numbers:list):
         "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
         "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
-        "lot_list_name":lot_list,
-        # "lot_namber": lot_num,
-        # "LOT_NAME": dikt_table[lot_num]["Описание"],  # Наименование и номер лота
+        "lot_colvo":"", # количество лотов
+        
+          # Наименование и номер лота
         # "DATA_AUCKCIONA": acsion_date,  # дата провдения
         # "LOT_PRICE": lot_price,  # цена лота
         # "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
         # "DEPOSIT": zadatok  # Размер задатка
         "smol_arb_name":"",
 
+
     }
+    if len(lot_numbers) > 1:
+        lot_info["lot_colvo"] = "следующих лотов"
+    else:
+        lot_info["lot_colvo"] = "следующего лота"
     
     lot_info["smol_arb_name"] = made_smole_name(lot_info["arb_man_name"])
     
 
     return clieInf | lot_info
-
 
