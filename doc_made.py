@@ -24,7 +24,7 @@ def made_docx_file(
 
 
 selected_lots = ["1"]  # введите номера лотов
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=0DA7D7540F9F4329A9A8FE1FC07FA166"
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=E44C901C3E1D4999B130DE518C1B4A21"
 
 dikt_table = efrsb_parser.data_lot_tabel(url)
 dict_two = efrsb_parser.make_content_dict(url)
