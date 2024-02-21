@@ -23,12 +23,12 @@ def made_docx_file(
         doc.save(f"Заявка для участия№1.docx")
 
 
-selected_lots = ["1"]  # введите номера лотов
+selected_lots = [1]  # введите номера лотов
 url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=E44C901C3E1D4999B130DE518C1B4A21"
 
-dikt_table = efrsb_parser.data_lot_tabel(url)
+dikt_table = efrsb_parser.data_lot_table(url)
 dict_two = efrsb_parser.make_content_dict(url)
-
+print(dict_two)
 data_from_pars = make_result_dikt(dict_two,lot_numbers=selected_lots)
 
 
@@ -37,4 +37,4 @@ made_docx_file(data_from_pars, "Agent_dogovor.docx")
 made_docx_file(data_from_pars, "Zayavka_auction.docx")
 
 
-# print(dikt_table)
+
