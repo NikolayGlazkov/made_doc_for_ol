@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    volumes:
+    - ".dbdata:/var/lib/mysql"
+    ports:
+    - "0.0.0.0:3306:3306"
+    
