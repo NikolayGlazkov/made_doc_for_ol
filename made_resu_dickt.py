@@ -57,6 +57,8 @@ def make_result_dikt(dict_two:dict,lot_numbers:list):
         type_of_bidding = "публичного предложения"
     elif dict_two["Вид торгов"] == "Закрытый аукцион":
         type_of_bidding = "закрытого аукциона"
+    elif dict_two["Вид торгов"] == "Закрытое публичное предложение":
+        type_of_bidding = "закрытое публичного предложения"
 
 
     
@@ -71,7 +73,7 @@ def make_result_dikt(dict_two:dict,lot_numbers:list):
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
         # "arb_man_email": "Это надо доделать не всегда есть",#dict_two["E-mail"],
 
-        # "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
+        #"SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
        # "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
         #"EFRSB_PUB_DAT": dict_two["Дата публикации"],  # Дата публикации в ЕФРСБ
         # "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
@@ -81,9 +83,9 @@ def make_result_dikt(dict_two:dict,lot_numbers:list):
         # "AR_MAN_IN_DAT": sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
         "INN_CNI_arbit_manager": INN_CNI_arbit_manager,  # инн снилс арбитражного упровляющего
         "Sro_Arbitration": dict_two["СРО АУ"],  # наименование СРО АУ
-        # "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
+        "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
         "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
-        "OPCLOSE": dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
+        "OPCLOSE":dict_two["Форма подачи предложения о цене"],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": f"ЭТП {dict_two['Место проведения']}",  # Этп проведения
         "lot_colvo":"", # количество лотов
         
@@ -92,7 +94,7 @@ def make_result_dikt(dict_two:dict,lot_numbers:list):
         # "LOT_PRICE": lot_price,  # цена лота
         # "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
         # "DEPOSIT": zadatok  # Размер задатка
-        "smol_arb_name":"",
+        # "smol_arb_name":"",
 
 
     }
